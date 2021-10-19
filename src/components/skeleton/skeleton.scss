@@ -1,0 +1,42 @@
+.skeleton {
+    width: 425px;
+    box-shadow: 0 0 20px (rgba(#000, .25));
+    padding: 25px;
+    margin-left: 25px;
+    span {
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-align: center;
+        animation: pulse 1.5s;
+        animation-iteration-count: infinite;
+    }
+    &-up {
+        display: flex;
+        align-items: center;
+    }
+    &-circle {
+        display: inline-block;
+        min-width: 40px;
+        height: 40px;
+        margin-right: 9px;
+        border-radius: 100%;
+        background-color: #c4c4c4;
+        animation: pulse 1.5s;
+        animation-iteration-count: infinite;
+    }
+    &-rect {
+        width: 100%;
+        background-color: #c4c4c4;
+        animation: pulse 1.5s;
+        animation-iteration-count: infinite;
+    }
+    .small {
+        height: 16px;
+    }
+    .big {
+        height: 35px;
+        margin-top: 15px;
+    }
+}

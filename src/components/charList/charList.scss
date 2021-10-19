@@ -1,0 +1,36 @@
+@import '../../style/variables';
+
+.char-content {
+    &-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(3, 200px);
+        grid-template-rows: repeat(3, 318px);
+        gap: 30px 25px;
+        &-item {
+            background-color: #232222;
+            transition: .2s all;
+            cursor: pointer;
+            list-style-type: none;
+            &-name {
+                font-size: 22px;
+                font-weight: 700;
+                color: #fff;
+                text-transform: uppercase;
+                margin: 15px 0 0 15px;
+            }
+            &:hover {
+                box-shadow: 0 5px 20px $main-color;
+                transform: translateY(-7px);
+            }
+        }
+    }
+    &-btn {
+        justify-self: center;
+        grid-column-start: 2;
+    }
+}

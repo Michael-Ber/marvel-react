@@ -1,0 +1,22 @@
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #232222;
+    margin-top: 50px;
+    padding: 0 25px 0 45px;
+    &-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    &-title {
+        display: block;
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+    }
+    &-text {
+        margin-left: 83px;
+    }
+}

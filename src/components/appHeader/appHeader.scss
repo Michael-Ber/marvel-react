@@ -1,0 +1,30 @@
+@import '../../style/variables';
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    &__main-link {
+        font-size: 28px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #000;
+        span {
+            color: $main-color;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    &__pages-link {
+        font-size: 28px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #000;
+        &_active {
+            color: $main-color;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

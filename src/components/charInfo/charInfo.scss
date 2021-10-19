@@ -1,0 +1,67 @@
+.char-content__info {
+    position: relative;
+    width: 425px;
+    margin-left: 25px;
+    padding: 25px;
+    box-shadow: 0 0 20px (rgba(#000, .25));
+    &-person {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        &-img {
+            min-width: 150px;
+            height: 150px;
+            margin-right: 25px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        &-btns {
+            span {
+                display: block;
+                font-size: 22px;
+                font-weight: 700;
+                text-transform: uppercase;
+                margin-bottom: 35px;
+            }
+        }
+        &-btn {
+            &:nth-child(2) {
+                margin-bottom: 10px;
+            }
+            &:hover {
+                transform: translateX(7px);
+            }
+        }
+    }
+    &-descr {
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 15px;
+    }
+    &-comicses {
+        margin-top: 10px;
+        strong {
+            display: block;
+            margin-bottom: 14px;
+        }
+    }
+    &-comics {
+        list-style-type: none;
+        padding: 4px 0 3px 10px;
+        box-shadow: 0 4px 4px (rgba(#000, .25));
+        &:nth-child(n):not(:last-child) {
+            margin-bottom: 10px;
+        }
+        &-link {
+            color: #000;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    
+}

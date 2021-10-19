@@ -1,0 +1,22 @@
+
+.app {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 50px 0 45px 0;
+    box-shadow: 0 0 20px (rgba(#000, .25));
+    background: url('../../resourses/img/vision.png') bottom right no-repeat;
+    z-index: 5;
+}
+.main-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    .char-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 50px;
+    }
+}
+
+

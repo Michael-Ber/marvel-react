@@ -1,0 +1,36 @@
+.comicses {
+    display: grid;
+    margin-top: 50px;
+    grid-template-columns: repeat(4, 225px);
+    gap: 57px 67px;
+    &__item {
+        list-style-type: none;
+        &-img {
+            width: 225px;
+            height: 346px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        &-title {
+            margin-top: 10px;
+            span {
+                font-size: 14px;
+                font-weight: 700;
+            }
+        }
+        &-cost {
+            margin-top: 9px;
+            span {
+                font-size: 14px;
+                font-weight: 700;
+                color: rgba(#000, .6); 
+            }
+        }
+    }
+    &-btn {
+        margin: 45px auto 0 auto;
+    }
+}

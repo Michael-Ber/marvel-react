@@ -1,0 +1,518 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+@import './variables';
+@import './button.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+@keyframes pulse {
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    } 
+    100% {
+        opacity: 0.4;
+    }
+}
+
+
+
+
+
+// .random {
+//     display: flex;
+//     justify-content: flex-start;
+//     align-items: flex-start;
+//     margin-top: 50px;
+//     &__char {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: flex-start;
+//         width: 50%;
+//         padding: 35px 35px 35px 40px;
+//         box-shadow: 5px 5px 20px (rgba(#000, .25));
+//         &-img {
+//             min-width: 180px;
+//             height: 180px;
+//             margin-right: 30px;
+//             img {
+//                 width: 100%;
+//                 height: 100%;
+//                 object-fit: cover;
+//             }
+//         }
+//         &-descr {
+//             display: flex;
+//             flex-direction: column;
+//             justify-content: center;
+//             align-items: flex-start;
+//         }
+//         &-name {
+//             text-transform: uppercase;
+//             font-size: 22px;
+//             font-weight: 700;
+//         }
+//         &-text {
+//             font-size: 14px;
+//             line-height: 19px;
+//             font-weight: 400;
+//             margin-top: 10px;
+//         }
+//         &-btns {
+//             display: flex;
+//             justify-content: flex-start;
+//             align-items: flex-start;
+//             margin-top: 11px;
+//         }
+//         &-btn {
+//             &:first-child {
+//                 margin-right: 30px;
+//             }
+//         }
+//     }
+//     &__select {
+//         position: relative;
+//         width: 50%;
+//         background-color: #232222;
+//         padding: 35px 40px;
+//         &-str {
+//             display: block; 
+//             color: #fff;
+//             font-size: 24px;
+//             line-height: 33px;
+//             font-weight: 700;
+//             &:nth-child(3) {
+//                 margin-top: 33px;
+//             }
+//         }
+//         img {
+//             position: absolute;
+//             bottom: 15px;
+//             right: -40px;
+//         }
+//         &-btn {
+//             margin-top: 13px;
+//             &::after {
+//                 border-color: #232222 $main-color $main-color #232222;
+//             }
+//             &::before {
+//                 border-color: $main-color #232222 #232222 $main-color;
+//             }
+//         }
+//     }
+// }
+// .char-content {
+//     margin-top: 50px;
+//     &-wrapper {
+//         display: flex;
+//         justify-content: flex-start;
+//         align-items: flex-start;
+//         // .empty-char {
+//         //     width: 425px;
+//         //     box-shadow: 0 0 20px (rgba(#000, .25));
+//         //     padding: 25px;
+//         //     margin-left: 25px;
+//         //     span {
+//         //         display: block;
+//         //         font-size: 18px;
+//         //         font-weight: 700;
+//         //         margin-bottom: 15px;
+//         //         text-align: center;
+//         //         animation: pulse 1.5s;
+//         //         animation-iteration-count: infinite;
+//         //     }
+//         //     &-up {
+//         //         display: flex;
+//         //         align-items: center;
+//         //     }
+//         //     &-circle {
+//         //         display: inline-block;
+//         //         min-width: 40px;
+//         //         height: 40px;
+//         //         margin-right: 9px;
+//         //         border-radius: 100%;
+//         //         background-color: #c4c4c4;
+//         //         animation: pulse 1.5s;
+//         //         animation-iteration-count: infinite;
+//         //     }
+//         //     &-rect {
+//         //         width: 100%;
+//         //         background-color: #c4c4c4;
+//         //         animation: pulse 1.5s;
+//         //         animation-iteration-count: infinite;
+//         //     }
+//         //     .small {
+//         //         height: 16px;
+//         //     }
+//         //     .big {
+//         //         height: 35px;
+//         //         margin-top: 15px;
+//         //     }
+//         // }
+//     }
+//     // &__list {
+//     //     display: grid;
+//     //     grid-template-columns: repeat(3, 200px);
+//     //     grid-template-rows: repeat(3, 318px);
+//     //     gap: 30px 25px;
+//     //     &-item {
+//     //         background-color: #232222;
+//     //         transition: .2s all;
+//     //         cursor: pointer;
+//     //         list-style-type: none;
+//     //         &-name {
+//     //             font-size: 22px;
+//     //             font-weight: 700;
+//     //             color: #fff;
+//     //             text-transform: uppercase;
+//     //             margin: 15px 0 0 15px;
+//     //         }
+//     //         &:hover {
+//     //             box-shadow: 0 5px 20px $main-color;
+//     //             transform: translateY(-7px);
+//     //         }
+//     //     }
+//     // }
+//     &__info {
+//         position: relative;
+//         width: 425px;
+//         margin-left: 25px;
+//         padding: 25px;
+//         box-shadow: 0 0 20px (rgba(#000, .25));
+//         &-person {
+//             display: flex;
+//             justify-content: flex-start;
+//             align-items: flex-start;
+//             &-img {
+//                 min-width: 150px;
+//                 height: 150px;
+//                 margin-right: 25px;
+//                 img {
+//                     width: 100%;
+//                     height: 100%;
+//                     object-fit: cover;
+//                 }
+//             }
+//             &-btns {
+//                 span {
+//                     display: block;
+//                     font-size: 22px;
+//                     font-weight: 700;
+//                     text-transform: uppercase;
+//                     margin-bottom: 35px;
+//                 }
+//             }
+//             &-btn {
+//                 &:nth-child(2) {
+//                     margin-bottom: 10px;
+//                 }
+//                 &:hover {
+//                     transform: translateX(7px);
+//                 }
+//             }
+//         }
+//         &-descr {
+//             font-size: 14px;
+//             font-weight: 400;
+//             margin-top: 15px;
+//         }
+//         &-comicses {
+//             margin-top: 10px;
+//             strong {
+//                 display: block;
+//                 margin-bottom: 14px;
+//             }
+//         }
+//         &-comics {
+//             list-style-type: none;
+//             padding: 4px 0 3px 10px;
+//             box-shadow: 0 4px 4px (rgba(#000, .25));
+//             &:nth-child(n):not(:last-child) {
+//                 margin-bottom: 10px;
+//             }
+//             &-link {
+//                 color: #000;
+//                 text-decoration: none;
+//                 &:hover {
+//                     text-decoration: underline;
+//                 }
+//             }
+//         }
+//     }
+//     &-btn {
+//         justify-self: center;
+//         grid-column-start: 2;
+//         margin-top: 15px;
+//     }
+// }
+// .find-item {
+//     display: none;
+//     position: absolute;
+//     bottom: -140px;
+//     left: 0;
+//     width: 425px;
+//     box-shadow: 0 0 20px (rgba(#000, .25));
+//     padding: 25px;
+//     background-color: #fff;
+//     z-index: 10; 
+// }
+// // END Main page
+
+// //Comicses page
+// .app-comicses {
+//     display: none;
+//     max-width: 1440px;
+//     margin: 0 auto;
+//     padding: 50px 0 45px 0;
+//     box-shadow: 0 0 20px (rgba(#000, .25));
+// }
+// .comicses-page {
+//     max-width: 1100px;
+//     margin: 0 auto;
+//     .poster {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//         background-color: #232222;
+//         margin-top: 50px;
+//         padding: 0 25px 0 45px;
+//         &-wrapper {
+//             display: flex;
+//             justify-content: flex-start;
+//             align-items: center;
+//         }
+//         &-title {
+//             display: block;
+//             color: #fff;
+//             font-size: 24px;
+//             font-weight: 700;
+//         }
+//         &-text {
+//             margin-left: 83px;
+//         }
+//     }
+//     .img {
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//     }
+
+//     // .comicses {
+//     //     display: grid;
+//     //     margin-top: 50px;
+//     //     grid-template-columns: repeat(4, 225px);
+//     //     gap: 57px 67px;
+//     //     &__item {
+//     //         &-img {
+//     //             width: 225px;
+//     //             height: 346px;
+//     //             img {
+//     //                 width: 100%;
+//     //                 height: 100%;
+//     //                 object-fit: cover;
+//     //             }
+//     //         }
+//     //         &-title {
+//     //             margin-top: 10px;
+//     //             span {
+//     //                 font-size: 14px;
+//     //                 font-weight: 700;
+//     //             }
+//     //         }
+//     //         &-cost {
+//     //             margin-top: 9px;
+//     //             span {
+//     //                 font-size: 14px;
+//     //                 font-weight: 700;
+//     //                 color: rgba(#000, .6); 
+//     //             }
+//     //         }
+//     //     }
+//     //     &-btn {
+//     //         margin: 45px auto 0 auto;
+//     //     }
+//     // }
+// }
+
+// //END Comicses page
+
+// //Comics page
+// .app-comics {
+//     max-width: 1440px;
+//     margin: 0 auto;
+//     padding: 50px 0 45px 0;
+//     box-shadow: 0 0 20px (rgba(#000, .25));
+// }
+// .comics-page {
+//     max-width: 1100px;
+//     margin: 0 auto;
+//     .poster {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//         background-color: #232222;
+//         margin-top: 50px;
+//         padding: 0 25px 0 45px;
+//         &-wrapper {
+//             display: flex;
+//             justify-content: flex-start;
+//             align-items: center;
+//         }
+//         &-title {
+//             display: block;
+//             color: #fff;
+//             font-size: 24px;
+//             font-weight: 700;
+//         }
+//         &-text {
+//             margin-left: 83px;
+//         }
+//     }
+//     .img {
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//     }
+//     // .comics {
+//     //     display: flex;
+//     //     justify-content: space-between;
+//     //     align-items: flex-start;
+//     //     margin-top: 50px;
+//     //     &__img {
+//     //         min-width: 293px;
+//     //         height: 450px;
+//     //         margin-right: 50px;
+//     //         img {
+//     //             width: 100%;
+//     //             height: 100%;
+//     //             object-fit: cover;
+//     //         }
+//     //     }
+//     //     &__descr {
+//     //         display: flex;
+//     //         flex-direction: column;
+//     //         align-items: flex-start;
+//     //         justify-content: center;
+//     //         &-name {
+//     //             font-size: 22px;
+//     //             font-weight: 700;
+//     //         }
+//     //         &-text {
+//     //             font-size: 18px;
+//     //             font-weight: 400;
+//     //             margin-top: 28px;
+//     //         }
+//     //         &-pagenum {
+//     //             font-size: 18px;
+//     //             font-weight: 400;
+//     //             margin-top: 40px;
+//     //         }
+//     //         &-lang {
+//     //             font-size: 18px;
+//     //             font-weight: 400;
+//     //             margin-top: 28px;
+//     //         }
+//     //         &-cost {
+//     //             font-size: 24px;
+//     //             font-weight: 700;
+//     //             color: $main-color;
+//     //             margin-top: 28px;
+//     //         }
+//     //     }
+//     //     &__btn {
+//     //         min-width: 76px;
+//     //         margin-left: 127px;
+//     //         font-size: 18px;
+//     //         font-weight: 700;
+//     //         cursor: pointer;
+//     //         border: none;
+//     //     }
+//     // }
+// }
+
+// // END Comics page
+
+// //CHARACTER PAGE
+
+// .app-character {
+//     max-width: 1440px;
+//     margin: 0 auto;
+//     padding: 50px 0 45px 0;
+//     box-shadow: 0 0 20px (rgba(#000, .25));
+// }
+// .char-page {
+//     max-width: 1100px;
+//     margin: 0 auto;
+//     .poster {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//         background-color: #232222;
+//         margin-top: 50px;
+//         padding: 0 25px 0 45px;
+//         &-wrapper {
+//             display: flex;
+//             justify-content: flex-start;
+//             align-items: center;
+//         }
+//         &-title {
+//             display: block;
+//             color: #fff;
+//             font-size: 24px;
+//             font-weight: 700;
+//         }
+//         &-text {
+//             margin-left: 83px;
+//         }
+//     }
+//     .img {
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//     }
+//     // .character {
+//     //     display: flex;
+//     //     justify-content: space-between;
+//     //     align-items: flex-start;
+//     //     margin-top: 50px;
+//     //     &__img {
+//     //         min-width: 293px;
+//     //         height: 450px;
+//     //         margin-right: 50px;
+//     //         img {
+//     //             width: 100%;
+//     //             height: 100%;
+//     //             object-fit: cover;
+//     //         }
+//     //     }
+//     //     &__descr {
+//     //         display: flex;
+//     //         flex-direction: column;
+//     //         align-items: flex-start;
+//     //         justify-content: center;
+//     //         &-name {
+//     //             font-size: 22px;
+//     //             font-weight: 700;
+//     //         }
+//     //         &-text {
+//     //             font-size: 18px;
+//     //             font-weight: 400;
+//     //             margin-top: 28px;
+//     //         }
+//     //     }
+//     //     &__btn {
+//     //         min-width: 76px;
+//     //         margin-left: 127px;
+//     //         font-size: 18px;
+//     //         font-weight: 700;
+//     //         cursor: pointer;
+//     //         border: none;
+//     //     }
+//     // }
+// }
+// //END CHARACTER PAGE
