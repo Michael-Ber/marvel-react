@@ -23,7 +23,7 @@ class MarvelService {
     _transformChar = (char) => {
         return {
             name: char.name,
-            description: char.description.length > 130 ? char.description.slice(0, 130) + '...': char.description === ''? 'Sorry, there is no description :(': char.description,
+            description: char.description ? char.description.slice(0, 130) + '...': 'Sorry, there is no description',
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             urlHome: char.urls[0].url,
             urlWiki: char.urls[1].url,
