@@ -3,7 +3,7 @@ import './randomChar.scss';
 import MarvelService from '../../services/MarvelService';
 import mjolnir from '../../resourses/img/mjolnir.png';
 import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/errorMessage';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 class RandomChar extends React.Component {
 
@@ -15,7 +15,7 @@ class RandomChar extends React.Component {
 
     componentDidMount () {
         this.updateChar();
-        this.timerId = setInterval(this.updateChar, 12000);
+        this.timerId = setInterval(this.updateChar, 52000);
     }
 
     componentWillUnmount () {
@@ -38,7 +38,6 @@ class RandomChar extends React.Component {
     updateChar = () => {
         this.onLoading();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        // const id = 4523;
         this.marvelService
             .getCharacter(id)
             .then(res => {
@@ -47,9 +46,8 @@ class RandomChar extends React.Component {
             .catch(this.onError)
     }
     onChangeChar = () => {
-        if(!this.state.error) {
-            this.setState({loading: true});
-        };
+        // this.onLoading();
+        this.setState({error: false});
         this.updateChar();
     }
 
@@ -79,10 +77,15 @@ class RandomChar extends React.Component {
 
 const View = ({char}) => {
     const {name, description, thumbnail, urlHome, urlWiki} = char;
+    const notAvailableImg = thumbnail.slice(-23, -4);
+    let imgStyle = {objectFit: 'cover'};
+    if(notAvailableImg === 'image_not_available') {
+        imgStyle = {objectFit: 'contain'};
+    }
     return (
         <div className="random__char">
             <div className="random__char-img">
-                <img src={thumbnail} alt='Random character'/>
+                <img src={thumbnail} alt='Random character' style={imgStyle}/>
             </div>
             <div className="random__char-descr">
                 <h2 className="random__char-name">{name}</h2>

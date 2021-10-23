@@ -1,77 +1,108 @@
+import React from 'react';
+import MarvelService from '../../services/MarvelService';
+import Skeleton from '../skeleton/Skeleton';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charInfo.scss';
-import abyss from '../../resourses/img/abyss.jpg';
 
-const CharInfo = () => {
+class CharInfo extends React.Component {
+    state = {
+        char: null,
+        loading: false,
+        error: false, 
+        skeleton: true
+    };
+
+    marvelService = new MarvelService();
+
+    onLoading = () => {
+        this.setState({loading: true, skeleton: false});
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({char, loading: false, error: false, skeleton: false})
+    }
+    onError = () => {
+        this.setState({loading: false, error: true})
+    }
+
+    updateChar = (id) => {
+        this.onLoading();
+        this.marvelService
+            .getCharacter(id)
+            .then(res => {
+                this.onCharLoaded(res);
+            })
+            .catch(this.onError)
+    }
+    onChangeChar = () => {
+        this.setState({error: false});
+        this.updateChar();
+    }
+    
+    componentDidMount () {
+        if(!this.props.charId){
+            this.setState({skeleton: true})
+            return;
+        }
+        this.updateChar(this.props.charId);
+    }
+    componentDidUpdate(prevProps) {
+        if(this.props.charId !== prevProps.charId) {
+            this.updateChar(this.props.charId)
+        }
+    }
+    render() {
+        const {loading, error, skeleton} = this.state;
+        const skeletonMessage = skeleton ? <Skeleton />: null;
+        const loadingMessage = loading ? <Spinner />: null;
+        const errorMessage = error ? <ErrorMessage />: null;
+        const content = !(loading || error || skeleton) ? <View char={this.state.char}/>: null;
+        return (
+            <div className="char-content__info">
+                {errorMessage}
+                {loadingMessage}
+                {skeletonMessage}
+                {content}
+            </div>
+        )
+    }
+}
+
+const View = ({char}) => {
+    const {name, thumbnail, urlHome, urlWiki, description, comics} = char;
     return (
-        <div className="char-content__info">
+        <>
             <div className="char-content__info-person">
                 <div className="char-content__info-person-img">
-                    <img src={abyss} alt="character"/>
+                    <img src={thumbnail} alt={name}/>
                 </div>
                 <div className="char-content__info-person-btns">
-                    <span>Abyss</span>
-                    <button className="char-content__info-person-btn btn btn-main">homepage</button>
-                    <button className="char-content__info-person-btn btn btn-sec">wiki</button>
+                    <span>{name}</span>
+                    <a href={urlHome} className="char-content__info-person-btn btn btn-main">homepage</a>
+                    <a href={urlWiki} className="char-content__info-person-btn btn btn-sec">wiki</a>
                 </div>
             </div>
             <div className="char-content__info-descr">
                 <article>
-                    In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
+                    {description}
                 </article>
             </div>
             <ul className="char-content__info-comicses"><strong>Comics:</strong>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        All-Winners Squad: Band of Heroes (2011) #3
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Alpha Flight (1983) #50
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Amazing Spider-Man (1999) #503
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Amazing Spider-Man (1999) #504
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        AMAZING SPIDER-MAN VOL. 7: BOOK OF EZEKIEL TPB (Trade Paperback)
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Amazing-Spider-Man: Worldwide Vol. 8 (Trade Paperback)
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Asgardians Of The Galaxy Vol. 2: War Of The Realms (Trade Paperback)
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Vengeance (2011) #4
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Avengers (1963) #1
-                    </a>
-                </li>
-                <li className="char-content__info-comics">
-                    <a href="#" className="char-content__info-comics-link">
-                        Avengers (1996) #1
-                    </a>
-                </li>
+                {comics.map((item, i) => {
+                    if(typeof(item) !== 'object') {
+                        return item;
+                    }
+                    return (
+                        <li key={i} className="char-content__info-comics">
+                            <a href={item.resourceURI} className="char-content__info-comics-link">
+                                {item.name}
+                            </a>
+                        </li>
+                    )
+                })}
             </ul>
-        </div>
+        </>
     )
 }
 
