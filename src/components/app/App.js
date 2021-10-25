@@ -3,6 +3,7 @@ import AppHeader from '../appHeader/AppHeader';
 import RandomChar from '../randomChar/RandomChar';
 import CharList from '../charList/CharList';
 import CharInfo from '../charInfo/CharInfo';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import './app.scss';
 
 class App extends React.Component {
@@ -18,10 +19,16 @@ class App extends React.Component {
 			<div className="app">
 				<div className = "main-page">
 					<AppHeader />
-					<RandomChar />
+					<ErrorBoundary>
+						<RandomChar />
+					</ErrorBoundary>
 					<div className = "char-wrapper">
-						<CharList onSelectChar={this.onSelectChar}/>
-						<CharInfo charId={this.state.selectedChar}/>
+						<ErrorBoundary>
+							<CharList onSelectChar={this.onSelectChar}/>
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<CharInfo charId={this.state.selectedChar}/>
+						</ErrorBoundary>
 					</div>
 				</div>
 			</div>

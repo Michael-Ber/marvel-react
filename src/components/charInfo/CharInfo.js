@@ -41,6 +41,7 @@ class CharInfo extends React.Component {
     }
     
     componentDidMount () {
+        
         if(!this.props.charId){
             this.setState({skeleton: true})
             return;
