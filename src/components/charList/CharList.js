@@ -9,17 +9,7 @@ class CharList extends React.Component {
     marvelService = new MarvelService();
     componentDidMount() {
         this.onUpdateChars();
-        // window.addEventListener('scroll', this.onUpdateScroll);
     }
-    // componentWillUnmount () {
-    //     window.removeEventListener('scroll', this.onUpdateScroll);
-    // }
-    // onUpdateScroll = () => {
-    //     console.log(window.pageYOffset, document.documentElement.scrollHeight, document.documentElement.clientHeight);
-    //     if((window.pageYOffset + document.documentElement.clientHeight) >= document.documentElement.scrollHeight) {
-    //         this.onUpdateMore();
-    //     }
-    // }
     state = {
         chars: [],
         loading: true,

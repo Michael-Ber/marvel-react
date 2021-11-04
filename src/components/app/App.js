@@ -4,6 +4,8 @@ import RandomChar from '../randomChar/RandomChar';
 import CharList from '../charList/CharList';
 import CharInfo from '../charInfo/CharInfo';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+
+import PropTypes from 'prop-types'; 
 import './app.scss';
 
 class App extends React.Component {
@@ -36,4 +38,8 @@ class App extends React.Component {
 	}
 }
 
+
+App.propTypes = {
+	onSelectChar: PropTypes.func
+}
 export default App;
