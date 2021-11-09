@@ -5,7 +5,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charList.scss';
 
 class CharList extends React.Component {
-
+    refOnItem = [];
     marvelService = new MarvelService();
     componentDidMount() {
         this.onUpdateChars();
@@ -66,11 +66,21 @@ class CharList extends React.Component {
                 }
             })
     }
+    setInputRef = elem => {
+        this.refOnItem.push(elem);
+    }
+    setActiveClass = (n) => {
+        console.log(this.refOnItem, n);
+        this.refOnItem.forEach(item => {
+            item.classList.remove('char-content__list-item-selected');
+        })
+        this.refOnItem[n].classList.add('char-content__list-item-selected');
+    }
     render() {
         const {chars, loading, error, loadingMore} = this.state;
         const loadingMessage = loading ? <div style={{gridRowStart: 2, gridColumnStart: 2,  justifySelf: 'center', alignSelf: 'center'}}> <Spinner /> </div> : null;
         const errorMessage = error ?<div style={{gridRowStart: 1, gridColumnStart: 2,   justifySelf: 'center', alignSelf: 'center'}}><ErrorMessage /></div> : null;
-        const elems = !(error) ? chars.map(item => {
+        const elems = !(error) ? chars.map((item, n) => {
             const {name, thumbnail, id} = item;
             let styleImgNotAvailable = {objectFit: 'cover'};
             if(thumbnail.slice(-23, -4) === 'image_not_available') {
@@ -78,9 +88,10 @@ class CharList extends React.Component {
             }
             return (
                 <li 
+                    ref = {this.setInputRef}
                     key={id} 
                     className="char-content__list-item"
-                    onClick={() => this.props.onSelectChar(id)}>
+                    onClick={() => {this.props.onSelectChar(id); this.setActiveClass(n)}}>
                     <div className="char-content__list-item-img">
                         <img src={thumbnail} alt="character" style={styleImgNotAvailable}/>
                     </div>

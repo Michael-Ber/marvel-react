@@ -39,6 +39,10 @@
                 box-shadow: 0 5px 20px $main-color;
                 transform: translateY(-7px);
             }
+            &-selected {
+                transform: translateY(-8px);
+                box-shadow: 0 5px 20px $main-color;
+            }
         }
     }
     &-btn {
