@@ -75,6 +75,7 @@ class CharList extends React.Component {
             item.classList.remove('char-content__list-item-selected');
         })
         this.refOnItem[n].classList.add('char-content__list-item-selected');
+        this.refOnItem[n].focus();
     }
     render() {
         const {chars, loading, error, loadingMore} = this.state;
@@ -88,10 +89,11 @@ class CharList extends React.Component {
             }
             return (
                 <li 
+                    tabIndex = {0}
                     ref = {this.setInputRef}
                     key={id} 
                     className="char-content__list-item"
-                    onClick={() => {this.props.onSelectChar(id); this.setActiveClass(n)}}>
+                    onFocus={() => {this.props.onSelectChar(id); this.setActiveClass(n)}}>
                     <div className="char-content__list-item-img">
                         <img src={thumbnail} alt="character" style={styleImgNotAvailable}/>
                     </div>
