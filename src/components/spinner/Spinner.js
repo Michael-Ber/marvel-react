@@ -1,8 +1,9 @@
 import spinner from './spinner.gif';
 
-const Spinner = () => {
+const Spinner = (props) => {
+    const alignGif = props ? {gridColumnStart: 2, justifySelf: 'end'}: {textAlign: 'center'};
     return (
-        <div className="spinner" style={{textAlign: 'center'}}>
+        <div className="spinner" style={alignGif}>
             <img src={spinner} alt="spinner" />
         </div>
     )

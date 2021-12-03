@@ -1,76 +1,60 @@
-import React from 'react';
-import MarvelService from '../../services/MarvelService';
+import React, {useState, useEffect} from 'react';
+import useMarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charInfo.scss';
 
-class CharInfo extends React.Component {
-    state = {
-        char: null,
-        loading: false,
-        error: false, 
-        skeleton: true
-    };
+const CharInfo = (props) => {
+    const [char, setChar] = useState(null);
+    const [skeleton, setSkeleton] = useState(true);
+    const {loading, error, getCharacter} = useMarvelService();
 
-    marvelService = new MarvelService();
-
-    onLoading = () => {
-        this.setState({loading: true, skeleton: false});
+    const onLoading = () => {
+        setSkeleton(false);
     }
 
-    onCharLoaded = (char) => {
-        this.setState({char, loading: false, error: false, skeleton: false})
-    }
-    onError = () => {
-        this.setState({loading: false, error: true})
+    const onCharLoaded = (char) => {
+        setChar(char);
+        setSkeleton(false);
     }
 
-    updateChar = (id) => {
-        this.onLoading();
-        this.marvelService
-            .getCharacter(id)
+    const updateChar = (id) => {
+        onLoading();
+        getCharacter(id)
             .then(res => {
-                this.onCharLoaded(res);
+                onCharLoaded(res);
             })
-            .catch(this.onError)
     }
-    onChangeChar = () => {
-        this.setState({error: false});
-        this.updateChar();
+    const onChangeChar = () => {
+        updateChar();
     }
-    
-    componentDidMount () {
-        
-        if(!this.props.charId){
-            this.setState({skeleton: true})
+    useEffect(() => {
+        if(!props.charId){
+            setSkeleton(true);
             return;
         }
-        this.updateChar(this.props.charId);
-    }
-    componentDidUpdate(prevProps) {
-        if(this.props.charId !== prevProps.charId) {
-            this.updateChar(this.props.charId)
-        }
-    }
-    render() {
-        const {loading, error, skeleton} = this.state;
-        const skeletonMessage = skeleton ? <Skeleton />: null;
-        const loadingMessage = loading ? <Spinner />: null;
-        const errorMessage = error ? <ErrorMessage />: null;
-        const content = !(loading || error || skeleton) ? <View char={this.state.char}/>: null;
-        return (
-            <div className="char-content__info">
-                {errorMessage}
-                {loadingMessage}
-                {skeletonMessage}
-                {content}
-            </div>
-        )
-    }
+        updateChar(props.charId);
+    }, [props.charId])
+    const skeletonMessage = skeleton ? <Skeleton />: null;
+    const loadingMessage = loading ? <Spinner />: null;
+    const errorMessage = error ? <ErrorMessage />: null;
+    const content = !(loading || error || skeleton) ? <View char={char}/>: null;
+    return (
+        <div className="char-content__info">
+            {errorMessage}
+            {loadingMessage}
+            {skeletonMessage}
+            {content}
+        </div>
+    )
+    
 }
 
 const View = ({char}) => {
+    if(!char) {
+        return null;
+    }
     const {name, thumbnail, urlHome, urlWiki, description, comics} = char;
     return (
         <>

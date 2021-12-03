@@ -1,81 +1,60 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './randomChar.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import mjolnir from '../../resourses/img/mjolnir.png';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-class RandomChar extends React.Component {
+const RandomChar = () => {
+    const [char, setChar] = useState(null);
 
-    state = {
-        char: {},
-        loading: true,
-        error: false
-    };
-
-    componentDidMount () {
-        this.updateChar();
-        this.timerId = setInterval(this.updateChar, 52000);
+    const {loading, error, getCharacter} = useMarvelService();
+    const onCharLoaded = (char) => {
+        setChar(char);
     }
 
-    componentWillUnmount () {
-        clearInterval(this.timerId);
-    }
-
-    marvelService = new MarvelService();
-
-    onLoading = () => {
-        this.setState({loading: true});
-    }
-
-    onCharLoaded = (char) => {
-        this.setState({char, loading: false, error: false})
-    }
-    onError = () => {
-        this.setState({loading: false, error: true})
-    }
-
-    updateChar = () => {
-        this.onLoading();
+    const updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.marvelService
-            .getCharacter(id)
+        getCharacter(id)
             .then(res => {
-                this.onCharLoaded(res);
+                onCharLoaded(res);
             })
-            .catch(this.onError)
     }
-    onChangeChar = () => {
-        // this.onLoading();
-        this.setState({error: false});
-        this.updateChar();
+    const onChangeChar = () => {
+        updateChar();
     }
-
-    render() {
-        const {char, loading, error} = this.state;
-        const errorMessage = error ? <div className="random__error"><ErrorMessage /></div>: null;
-        const loadingMessage = loading ? <div className="random__spinner"><Spinner /></div>: null;
-        const content = !(loading || error) ? <View char={char} />: null;
-        return (
-            <div className="random">
-                {errorMessage}
-                {loadingMessage}
-                {content}
-                <div className="random__select">
-                    <span className="random__select-str">Random character for today</span>
-                    <span className="random__select-str">Do you want to get to know him better?</span>
-                    <span className="random__select-str">Or choose another one</span>
-                    <button 
-                        className="random__select-btn btn btn-main"
-                        onClick={this.onChangeChar}>try it</button>
-                    <img src={mjolnir} alt="random logo"/>
-                </div>
+    useEffect(() => {
+        updateChar();
+        const timerId = setInterval(updateChar, 52000);
+        return function clean() {clearInterval(timerId)};
+    }, [])
+    
+    const errorMessage = error ? <div className="random__error"><ErrorMessage /></div>: null;
+    const loadingMessage = loading ? <div className="random__spinner"><Spinner /></div>: null;
+    const content = !(loading || error)  ? <View char={char} />: null;
+    return (
+        <div className="random">
+            {errorMessage}
+            {loadingMessage}
+            {content}
+            <div className="random__select">
+                <span className="random__select-str">Random character for today</span>
+                <span className="random__select-str">Do you want to get to know him better?</span>
+                <span className="random__select-str">Or choose another one</span>
+                <button 
+                    className="random__select-btn btn btn-main"
+                    onClick={onChangeChar}>try it</button>
+                <img src={mjolnir} alt="random logo"/>
             </div>
-        )
-    }
+        </div>
+    )
+    
 }
 
-const View = ({char}) => {
+const View = ({char, loading}) => {
+    if(!char) {
+        return null;
+    }
     const {name, description, thumbnail, urlHome, urlWiki} = char;
     const notAvailableImg = thumbnail.slice(-23, -4);
     let imgStyle = {objectFit: 'cover'};

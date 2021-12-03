@@ -5,7 +5,7 @@
     margin: 0 auto;
     padding: 50px 0 45px 0;
     box-shadow: 0 0 20px (rgba(#000, .25));
-    background: url('../../resourses/img/vision.png') bottom right no-repeat;
+    // background: url('../../resourses/img/vision.png') bottom right no-repeat;
     z-index: 5;
 }
 .main-page {
@@ -16,6 +16,11 @@
         justify-content: space-between;
         align-items: flex-start;
         margin-top: 50px;
+    }
+    &-img {
+        position: absolute;
+        bottom: 0;
+        right: -170px;
     }
 }
 

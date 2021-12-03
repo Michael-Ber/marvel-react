@@ -1,10 +1,16 @@
+@import '../../style/variables';
 .comicses {
     display: grid;
     margin-top: 50px;
     grid-template-columns: repeat(4, 225px);
     gap: 57px 67px;
     &__item {
+        cursor: pointer;
         list-style-type: none;
+        &:hover {
+            box-shadow: 0 5px 20px $main-color;
+            transform: translateY(-7px);
+        }
         &-img {
             width: 225px;
             height: 346px;
@@ -28,6 +34,12 @@
                 font-weight: 700;
                 color: rgba(#000, .6); 
             }
+        }
+        &-link {
+            margin: 0;
+            padding: 0;
+            color: #000;
+            text-decoration: none;
         }
     }
     &-btn {
