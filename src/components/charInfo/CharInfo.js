@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import useMarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
 import Spinner from '../spinner/Spinner';
@@ -26,9 +27,6 @@ const CharInfo = (props) => {
                 onCharLoaded(res);
             })
     }
-    const onChangeChar = () => {
-        updateChar();
-    }
     useEffect(() => {
         if(!props.charId){
             setSkeleton(true);
@@ -48,7 +46,6 @@ const CharInfo = (props) => {
             {content}
         </div>
     )
-    
 }
 
 const View = ({char}) => {
@@ -75,14 +72,16 @@ const View = ({char}) => {
             </div>
             <ul className="char-content__info-comicses"><strong>Comics:</strong>
                 {comics.map((item, i) => {
+                    const reg = /\/\d+/g;
+                    const uri = item.resourceURI.match(reg)[0].replace(/\//, '');
                     if(typeof(item) !== 'object') {
                         return item;
                     }
                     return (
                         <li key={i} className="char-content__info-comics">
-                            <a href={item.resourceURI} className="char-content__info-comics-link">
+                            <Link to={`/comics/${uri}`} className="char-content__info-comics-link">
                                 {item.name}
-                            </a>
+                            </Link>
                         </li>
                     )
                 })}

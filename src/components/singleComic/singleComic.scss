@@ -1,3 +1,4 @@
+@import '../../style/variables';
 .single-comic {
     display: flex;
     justify-content: space-between;
@@ -45,11 +46,17 @@
         }
     }
     &__btn {
+        display: block;
         min-width: 76px;
         margin-left: 127px;
+        color: #000;
+        text-decoration: none;
         font-size: 18px;
         font-weight: 700;
         cursor: pointer;
         border: none;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }

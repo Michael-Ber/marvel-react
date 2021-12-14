@@ -12,7 +12,7 @@ const AppHeader = () => {
             <h2 className="header__pages">
                 <NavLink end to="/" className={({isActive}) => "header__pages-link" + (isActive ? " header__pages-link_active": "")} >Characters</NavLink>
                 /
-                <NavLink end to="/comics" className={({isActive}) => "header__pages-link" + (isActive ? " header__pages-link_active": "")}>Comics</NavLink>
+                <NavLink to="/comics" className={({isActive}) => "header__pages-link" + (isActive ? " header__pages-link_active": "")}>Comics</NavLink>
             </h2>
         </header>
     )

@@ -1,29 +1,57 @@
+import { useParams, Link } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import useMarvelService from '../../services/MarvelService';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 import './singleComic.scss';
 
+
 const SingleComic = () => {
+    const [comic, setComic] = useState();
+    const par = useParams();
+    const {loading, error, getComic} = useMarvelService();
+    useEffect(() => {
+        getComic(par.comicId)
+            .then(setComic)
+    }, [])
+    const content = !error ? <View comic={comic} />: null;
+    const loadingMessage = loading ? <div style={{'textAlign': 'center'}}><Spinner /></div>: null;
+    const errorMessage = error ? <ErrorMessage />: null;
+    return (
+        <>
+            {loadingMessage}
+            {errorMessage}
+            {content}
+        </>
+    )
+}
+
+const View = ({comic}) => {
+    if(!comic) {return <></>} 
+    const {title, image, description, price, pages, lang} = comic;
     return (
         <div className="single-comic">
             <div className="single-comic__img">
-                <img src="./img/x-men.png" alt="xmen"/>
+                <img src={image} alt={title}/>
             </div>
             <div className="single-comic__descr">
                 <div className="single-comic__descr-name">
-                    <span>X-Men: Days of Future Past</span>
+                    <span>{title}</span>
                 </div>
                 <div className="single-comic__descr-text">
-                    <article>Re-live the legendary first journey into the dystopian future of 2013 - where Sentinels stalk the Earth, and the X-Men are humanity's only hope...until they die! Also featuring the first appearance of Alpha Flight, the return of the Wendigo, the history of the X-Men from Cyclops himself...and a demon for Christmas!?</article>
+                    <article>{description}</article>
                 </div>
                 <div className="single-comic__descr-pagenum">
-                    <span>144 pages</span>
+                    <span>{pages} pages</span>
                 </div>
                 <div className="single-comic__descr-lang">
-                    <span>Language: en-us</span>
+                    <span>Language: {lang}</span>
                 </div>
                 <div className="single-comic__descr-cost">
-                    <span>9.99$</span>
+                    <span>{price}$</span>
                 </div>
             </div>
-            <button className="single-comic__btn">Back to all</button>
+            <Link to="/comics" className="single-comic__btn">Back to all</Link>
         </div>
     )
 }
