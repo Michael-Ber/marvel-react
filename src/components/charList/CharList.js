@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './charList.scss';
 
 const CharList = (props) => {
@@ -9,7 +10,6 @@ const CharList = (props) => {
     const [loadingMore, setLoadingMore] = useState(false);
     const [charsEnded, setCharsEnded] = useState(false);
     const [moreCounter, setMoreCounter] = useState(1530);
-    
     const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
@@ -24,6 +24,7 @@ const CharList = (props) => {
         setChars(chars);
     }
     const onMoreCharsLoaded = (more) => {
+        
         let ended = false;
         if(more.length < 9) {
             ended = true;
@@ -51,7 +52,7 @@ const CharList = (props) => {
                 }
             })
     }
-    let refOnItem = useRef([]);
+    const refOnItem = useRef([]);
     const setActiveClass = (n) => {
         refOnItem.current.forEach(item => {
             item.classList.remove('char-content__list-item-selected');
@@ -69,28 +70,33 @@ const CharList = (props) => {
             styleImgNotAvailable = {objectFit: 'contain'};
         }
         return (
-            <li 
-                tabIndex = {0}
-                ref = {el => refOnItem.current[n] = el}
-                key={id} 
-                className="char-content__list-item"
-                onFocus={() => {props.onSelectChar(id); setActiveClass(n)}}>
-                <div className="char-content__list-item-img">
-                    <img src={thumbnail} alt="character" style={styleImgNotAvailable}/>
-                </div>
-                <div className="char-content__list-item-name">
-                    <span>{name}</span>
-                </div>
-            </li>
+            <CSSTransition key={id} timeout={1500} classNames="char-content__list-item">
+                <li 
+                    tabIndex = {0}
+                    ref = {el => refOnItem.current[n] = el}
+                    className="char-content__list-item"
+                    onFocus={() => {props.onSelectChar(id); setActiveClass(n)}}>
+                        <div 
+                            className="char-content__list-item-img">
+                            <img src={thumbnail} alt="character" style={styleImgNotAvailable}/>
+                        </div>
+                        <div className="char-content__list-item-name">
+                            <span>{name}</span>
+                        </div>
+                </li>
+            </CSSTransition>
+            
         )
     }): null; 
     const spinnerInsteadBtn = loadingMore ? <div style={{marginTop: '45px'}}><Spinner /></div>: null;
     return (
         <div className="char-content">
+            {loadingMessage}
+            {errorMessage}
             <ul className="char-content__list">
-                {loadingMessage}
-                {errorMessage}
-                {elems}
+                <TransitionGroup component={null}>
+                    {elems}
+                </TransitionGroup>
             </ul>
             {spinnerInsteadBtn}
             <button 

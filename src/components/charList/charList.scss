@@ -17,7 +17,6 @@
             justify-content: flex-start;
             align-items: flex-start;
             background-color: #232222;
-            transition: .2s all;
             cursor: pointer;
             list-style-type: none;
             &-img {
@@ -42,6 +41,20 @@
             &-selected {
                 transform: translateY(-8px);
                 box-shadow: 0 5px 20px $main-color;
+            }
+            &-enter {
+                opacity: 0.2;
+            }
+            &-enter-active {
+                opacity: 1;
+                transition: opacity .5s;
+            }
+            &-exit {
+                opacity: 1;
+            }
+            &-exit-active {
+                opacity: 0;
+                transition: opacity .5s;
             }
         }
     }
