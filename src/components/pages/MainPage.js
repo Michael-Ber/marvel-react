@@ -3,6 +3,7 @@ import RandomChar from '../randomChar/RandomChar';
 import CharList from '../charList/CharList';
 import CharInfo from '../charInfo/CharInfo';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+import FindChar from '../findChar/FindChar';
 
 import bg from '../../resourses/img/vision.png';
 
@@ -14,7 +15,7 @@ const MainPage = () => {
 	}
     return (
         <>
-            <img src={bg} alt="vision" className = " main-page-img" />
+            <img src={bg} alt="vision" className = "main-page-img" />
             <ErrorBoundary>
                 <RandomChar />
             </ErrorBoundary>

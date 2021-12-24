@@ -1,0 +1,53 @@
+.findChar {
+    position: absolute;
+    bottom: 225px;
+    right: 0;
+    background-color: #fff;
+    width: 425px;
+    padding: 25px;
+    box-shadow: 0 0 15px rgba(#000, .25);
+    &__form {
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        &-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+    }
+    &__input {
+        width: 250px;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        box-shadow: 0 5px 5px rgba(#000, .25);
+        text-transform: uppercase;
+    }
+    &__msg {
+        display: block;
+        color: red;
+        font-size: 18px;
+        font-weight: bold;
+        &_green {
+            color: green;
+        }
+        &-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+        &-noname {
+            display: block;
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+    }
+}

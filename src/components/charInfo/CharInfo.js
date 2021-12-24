@@ -4,6 +4,7 @@ import useMarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import FindChar from '../findChar/FindChar';
 import './charInfo.scss';
 
 const CharInfo = (props) => {
@@ -39,12 +40,15 @@ const CharInfo = (props) => {
     const errorMessage = error ? <ErrorMessage />: null;
     const content = !(loading || error || skeleton) ? <View char={char}/>: null;
     return (
-        <div className="char-content__info">
-            {errorMessage}
-            {loadingMessage}
-            {skeletonMessage}
-            {content}
-        </div>
+        <>
+            <div className="char-content__info">
+                {errorMessage}
+                {loadingMessage}
+                {skeletonMessage}
+                {content}
+            </div>
+            <FindChar />
+        </>
     )
 }
 
@@ -67,11 +71,11 @@ const View = ({char}) => {
             </div>
             <div className="char-content__info-descr">
                 <article>
-                    {description}
+                    {description.slice(0, 130) + '...'}
                 </article>
             </div>
             <ul className="char-content__info-comicses"><strong>Comics:</strong>
-                {comics.map((item, i) => {
+                {typeof(comics[0]) !== 'string' ? comics.map((item, i) => {
                     const reg = /\/\d+/g;
                     const uri = item.resourceURI.match(reg)[0].replace(/\//, '');
                     if(typeof(item) !== 'object') {
@@ -84,7 +88,7 @@ const View = ({char}) => {
                             </Link>
                         </li>
                     )
-                })}
+                }): comics[0]}
             </ul>
         </>
     )
