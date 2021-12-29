@@ -27,6 +27,7 @@ const MainPage = () => {
                     <CharInfo charId={selectedChar}/>
                 </ErrorBoundary>
             </div>
+            <FindChar />
         </>
     )
 }

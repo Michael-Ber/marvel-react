@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import {Formik, Form, Field, ErrorMessage as FormikErrorMessage} from 'formik';
 import * as yup from 'yup';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './findChar.scss';
 
@@ -11,12 +12,14 @@ const FindChar = () => {
     const [char, setChar] = useState(null);
     const [firstLoad, setFirstLoad] = useState(false);
     const {loading, error, getCharacterByName} = useMarvelService();
-    console.log(loading, error);
+
+    const errorMessage = error ? <ErrorMessage />: null;
     const loadingMsg = loading ? <div style={{marginTop: '10px', textAlign: 'center'}}><Spinner /></div>: null;
     const content = (!error) ? <View char={char} setChar={setChar} firstLoad={firstLoad} setFirstLoad={setFirstLoad} getCharacterByName={getCharacterByName} loading={loading}/>: null;
     return (
         <div className="findChar">
             {content}
+            {errorMessage}
             {loadingMsg}
         </div>
     )
@@ -47,7 +50,7 @@ const FindChar = () => {
                         
                         <button type="submit" className="findChar__submit btn btn-main">FIND</button>
                     </div>
-                    <ErrorMessage name="name" component="div" className="findChar__msg-noname" />
+                    <FormikErrorMessage name="name" component="div" className="findChar__msg-noname" />
                     {char && !loading ? 
                     <div className="findChar__msg-wrapper">
                         <span className="findChar__msg findChar__msg_green">

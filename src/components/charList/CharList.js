@@ -61,7 +61,7 @@ const CharList = (props) => {
         refOnItem.current[n].focus();
     }
     
-    const loadingMessage = (loading && !loadingMore) ? <div style={{gridRowStart: 2, gridColumnStart: 2,  justifySelf: 'center', alignSelf: 'center'}}> <Spinner /> </div> : null;
+    const loadingMessage = (loading && !loadingMore) ? <div style={{textAlign: 'center'}}> <Spinner /> </div> : null;
     const errorMessage = error ?<div style={{gridRowStart: 1, gridColumnStart: 2,   justifySelf: 'center', alignSelf: 'center'}}><ErrorMessage /></div> : null;
     const elems = !(error) ? chars.map((item, n) => {
         const {name, thumbnail, id} = item;

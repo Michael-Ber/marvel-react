@@ -1,23 +1,18 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import AppHeader from '../appHeader/AppHeader';
-import SingleComic from '../singleComic/SingleComic';
 import Spinner from '../spinner/Spinner';
 import PropTypes from 'prop-types'; 
 import './app.scss';
-import SingleChar from '../singleChar/SingleChar';
-import withSingleElem from '../HOC/withSingleElem';
-import useMarvelService from '../../services/MarvelService';
 
 const MainPage = lazy(() => import ('../pages/MainPage'));
 const ComicsPage = lazy(() => import('../pages/ComicsPage'));
 const ErrorPage = lazy(() => import('../pages/ErrorPage'));
-
-
+const SinglePage = lazy(() => import ('../pages/SinglePage'));
+const SingleCharLayout = lazy(() => import ('../pages/singleChar/SingleCharLayout'));
+const SingleComicLayout = lazy(() => import ('../pages/singleComic/SingleComicLayout'));
 
 const App = () => {
-	const {getCharacter, getComic} = useMarvelService();
-	const SingleCharPage = withSingleElem(SingleChar, getCharacter);
 	return (
 		<Router>
 			<div className="app">
@@ -27,9 +22,9 @@ const App = () => {
 						<Routes>
 							<Route path="/" element={<MainPage />}/>
 							<Route path="/characters"  element={<MainPage/>}/>
-							<Route path="/characters/:charId" element={<SingleCharPage/>}/>
+							<Route path="/characters/:id" element={<SinglePage Component={SingleCharLayout} dataType={'char'}/>}/>
 							<Route path = "/comics"  element={<ComicsPage/>}/>
-							<Route path = "/comics/:comicId" element={<SingleComic/>}/>
+							<Route path = "/comics/:id" element={<SinglePage Component={SingleComicLayout} dataType={'comic'}/>}/>
 							<Route path="*" element={<ErrorPage/>}/>
 						</Routes>
 					</Suspense>
