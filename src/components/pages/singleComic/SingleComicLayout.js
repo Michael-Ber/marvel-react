@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Spinner from '../../spinner/Spinner';
 import './singleComic.scss';
 
 
-const SingleComicLayout = ({item}) => {
-    const {title, image, description, price, pages, lang} = item;
+const SingleComicLayout = ({data}) => {
+    if(!data) {
+        return <Spinner />;
+    }
+    const {title, image, description, price, pages, lang} = data;
     return (
         <div className="single-comic">
             <Helmet>

@@ -8,7 +8,22 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 const RandomChar = () => {
     const [char, setChar] = useState(null);
 
-    const {loading, error, getCharacter} = useMarvelService();
+    const {getCharacter, process, setProcess} = useMarvelService();
+    const setContent = (process, Component, data) => {
+        switch(process) {
+            case 'waiting': 
+                return <Spinner />;
+            case 'loading':
+                return <div className="random__spinner"><Spinner /></div>;
+            case 'confirmed':
+                return <Component data={data} />;
+            case 'error':
+                return <div className="random__error"><ErrorMessage /></div>
+            default:
+                throw new Error('Unexpected process state');
+        }
+    }
+
     const onCharLoaded = (char) => {
         setChar(char);
     }
@@ -19,6 +34,7 @@ const RandomChar = () => {
             .then(res => {
                 onCharLoaded(res);
             })
+            .then(() => setProcess('confirmed'))
     }
     const onChangeChar = () => {
         updateChar();
@@ -29,14 +45,9 @@ const RandomChar = () => {
         return function clean() {clearInterval(timerId)};
     }, [])
     
-    const errorMessage = error ? <div className="random__error"><ErrorMessage /></div>: null;
-    const loadingMessage = loading ? <div className="random__spinner"><Spinner /></div>: null;
-    const content = !(loading || error)  ? <View char={char} />: null;
     return (
         <div className="random">
-            {errorMessage}
-            {loadingMessage}
-            {content}
+            {setContent(process, View, char)}
             <div className="random__select">
                 <span className="random__select-str">Random character for today</span>
                 <span className="random__select-str">Do you want to get to know him better?</span>
@@ -51,11 +62,11 @@ const RandomChar = () => {
     
 }
 
-const View = ({char, loading}) => {
-    if(!char) {
+const View = ({data}) => {
+    if(!data) {
         return null;
     }
-    const {name, description, thumbnail, urlHome, urlWiki} = char;
+    const {name, description, thumbnail, urlHome, urlWiki} = data;
     const notAvailableImg = thumbnail.slice(-23, -4);
     let imgStyle = {objectFit: 'cover'};
     if(notAvailableImg === 'image_not_available') {

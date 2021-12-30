@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -10,7 +10,22 @@ const CharList = (props) => {
     const [loadingMore, setLoadingMore] = useState(false);
     const [charsEnded, setCharsEnded] = useState(false);
     const [moreCounter, setMoreCounter] = useState(1530);
-    const {loading, error, getAllCharacters} = useMarvelService();
+    const {getAllCharacters, process, setProcess} = useMarvelService();
+
+    const setContent = (process, Component, loadingMore) => {
+        switch(process) {
+            case 'waiting':
+                return <Spinner />
+            case 'loading':
+                return !loadingMore ? <Spinner />: <Component />;
+            case 'confirmed':
+                return <Component />;
+            case 'error':
+                return <ErrorMessage />
+            default:
+                throw new Error('Unexpected process state');
+        }
+    }
 
     useEffect(() => {
         onUpdateChars();
@@ -19,9 +34,11 @@ const CharList = (props) => {
     const onUpdateChars = () => {
         getAllCharacters()
             .then(onCharsLoaded)
+            // .then(() => setProcess('confirmed'))
     }
     const onCharsLoaded = (chars) => {
         setChars(chars);
+        setProcess('confirmed');
     }
     const onMoreCharsLoaded = (more) => {
         
@@ -61,9 +78,7 @@ const CharList = (props) => {
         refOnItem.current[n].focus();
     }
     
-    const loadingMessage = (loading && !loadingMore) ? <div style={{textAlign: 'center'}}> <Spinner /> </div> : null;
-    const errorMessage = error ?<div style={{gridRowStart: 1, gridColumnStart: 2,   justifySelf: 'center', alignSelf: 'center'}}><ErrorMessage /></div> : null;
-    const elems = !(error) ? chars.map((item, n) => {
+    const elems = chars.map((item, n) => {
         const {name, thumbnail, id} = item;
         let styleImgNotAvailable = {objectFit: 'cover'};
         if(thumbnail.slice(-23, -4) === 'image_not_available') {
@@ -87,15 +102,15 @@ const CharList = (props) => {
             </CSSTransition>
             
         )
-    }): null; 
+    }); 
+    console.log(process);
+    const content = useMemo(() => {return setContent(process, () => {return elems}, loadingMore)}, [process, chars]);
     const spinnerInsteadBtn = loadingMore ? <div style={{marginTop: '45px'}}><Spinner /></div>: null;
     return (
         <div className="char-content">
-            {loadingMessage}
-            {errorMessage}
             <ul className="char-content__list">
                 <TransitionGroup component={null}>
-                    {elems}
+                    {content}
                 </TransitionGroup>
             </ul>
             {spinnerInsteadBtn}

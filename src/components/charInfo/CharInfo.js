@@ -1,62 +1,48 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import useMarvelService from '../../services/MarvelService';
-import Skeleton from '../skeleton/Skeleton';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
 import FindChar from '../findChar/FindChar';
+import setContent from '../../utils/setContent';
 import './charInfo.scss';
 
 const CharInfo = (props) => {
     const [char, setChar] = useState(null);
-    const [skeleton, setSkeleton] = useState(true);
-    const {loading, error, getCharacter} = useMarvelService();
-
-    const onLoading = () => {
-        setSkeleton(false);
-    }
+    const { getCharacter, process, setProcess, clearError} = useMarvelService();
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setSkeleton(false);
     }
 
     const updateChar = (id) => {
-        onLoading();
+        clearError();
         getCharacter(id)
             .then(res => {
                 onCharLoaded(res);
             })
+            .then(() => setProcess('confirmed'));
+             
     }
     useEffect(() => {
         if(!props.charId){
-            setSkeleton(true);
             return;
         }
         updateChar(props.charId);
     }, [props.charId])
-    const skeletonMessage = skeleton ? <Skeleton />: null;
-    const loadingMessage = loading ? <Spinner />: null;
-    const errorMessage = error ? <ErrorMessage />: null;
-    const content = !(loading || error || skeleton) ? <View char={char}/>: null;
     return (
         <>
             <div className="char-content__info">
-                {errorMessage}
-                {loadingMessage}
-                {skeletonMessage}
-                {content}
+                {setContent(process, View, char)}
             </div>
             <FindChar />
         </>
     )
 }
 
-const View = ({char}) => {
-    if(!char) {
+const View = ({data}) => {
+    if(!data) {
         return null;
     }
-    const {name, thumbnail, urlHome, urlWiki, description, comics} = char;
+    const {name, thumbnail, urlHome, urlWiki, description, comics} = data;
     return (
         <>
             <div className="char-content__info-person">

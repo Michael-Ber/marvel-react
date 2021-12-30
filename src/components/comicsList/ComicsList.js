@@ -6,24 +6,41 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import imgNotFound from '../../resourses/img/image-not-found.jpg';
 
+
+
 const ComicsList = () => {
     const [comics, setComics] = useState(null);
     const [loadingMore, setLoadingMore] = useState(false);
     const [comicsEnded, setComicsEnded] = useState(false);
     const [moreCounter, setMoreCounter] = useState(20);
     
-    const {loading, error, getAllComicses} = useMarvelService();
+    const {getAllComicses, process, setProcess} = useMarvelService();
 
+    const setContent = (process, Component, data) => {
+        switch(process) {
+            case 'waiting':
+                return <Spinner />
+            case 'loading':
+                return !loadingMore ? <Spinner />: <Component />;
+            case 'confirmed':
+                return <Component data={data} />;
+            case 'error':
+                return <ErrorMessage />
+            default:
+                throw new Error('Unexpected process state');
+        }
+    }
     useEffect(() => {
         onUpdateComics();
     }, [])
 
     const onUpdateComics = () => {
+        setProcess('loading');
         getAllComicses()
             .then(onComicsLoaded)
+            .then(() => setProcess('confirmed'))
     }
     const onComicsLoaded = (comics) => {
-        console.log(comics);
         setComics(comics);
     }
     const onMoreComicsLoaded = (more) => {
@@ -54,9 +71,7 @@ const ComicsList = () => {
                 }
             })
     }
-    const loadingMessage = (loading && !loadingMore) ? <Spinner/>: null;
-    const errorMessage = error ? <ErrorMessage />: null;
-    const elems = !(error || !comics) ? comics.map((item, i) => {
+    const elems = comics ? comics.map((item, i) => {
         const img = item.image ? item.image : imgNotFound; 
         const styleImgNotAvailable = item.image ? {objectFit: 'contain'}: {objectFit: 'contain'};
         const price = item.price > 0 ? `${item.price}$` : 'NOT AVAILABLE'; 
@@ -77,20 +92,18 @@ const ComicsList = () => {
             </li>
         )
     }):null;
-    const spinnerInsteadBtn = loadingMore ? <div style={{marginTop: '45px', textAlign: 'center'}}><Spinner /></div>: null;
+    const spinnerInsteadBtn = loadingMore ? <div style={{marginTop: '45px', textAlign: 'center'}}><Spinner /></div>: 
+        <button 
+            className="comicses-btn btn btn-main btn-long"
+            onClick = {(e) => onUpdateMore(e)}
+            disabled={loadingMore}>Load more
+        </button>;
     return (
         <>
             <ul className="comicses">
-                {errorMessage}
-                {loadingMessage}
-                {elems}
+                {setContent(process, ()=>elems)}
             </ul>
             {spinnerInsteadBtn}
-            <button 
-                className="char-content-btn btn btn-main btn-long"
-                onClick = {(e) => onUpdateMore(e)}
-                disabled={loadingMore}>Load more
-            </button>
         </>
     )
 }

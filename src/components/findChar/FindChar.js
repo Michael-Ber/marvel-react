@@ -10,33 +10,42 @@ import './findChar.scss';
 
 const FindChar = () => {
     const [char, setChar] = useState(null);
-    const [firstLoad, setFirstLoad] = useState(false);
-    const {loading, error, getCharacterByName} = useMarvelService();
+    // const [process, setProcess] = useState('waiting');
+    const [submitClicked, setSubmitClicked] = useState(false);
+    const {getCharacterByName, clearError, process, setProcess} = useMarvelService();
 
-    const errorMessage = error ? <ErrorMessage />: null;
-    const loadingMsg = loading ? <div style={{marginTop: '10px', textAlign: 'center'}}><Spinner /></div>: null;
-    const content = (!error) ? <View char={char} setChar={setChar} firstLoad={firstLoad} setFirstLoad={setFirstLoad} getCharacterByName={getCharacterByName} loading={loading}/>: null;
+    const setContent = (process, Component) => {
+        switch(process) {
+            case 'waiting':
+                return null;
+            case 'loading':
+                return <Spinner />;
+            case 'confirmed':
+                return <Component />;
+            case 'error':
+                return <ErrorMessage />
+            default:
+                throw new Error('Unexpected process state');
+        }
+    }
+    const updateChar = (name) => {
+        clearError();
+        setProcess('loading');
+        getCharacterByName(name)
+            .then(res => {setChar(res); setSubmitClicked(true)})
+            .then(() => setProcess('confirmed'))
+            .catch(() => setProcess('error'))
+    }
+
     return (
         <div className="findChar">
-            {content}
-            {errorMessage}
-            {loadingMsg}
-        </div>
-    )
-}
-
-    const View = ({char, setChar, firstLoad, setFirstLoad, getCharacterByName, loading}) => {
-        return (
             <Formik 
                 initialValues = {{name: ''}}
                 validationSchema = {yup.object({
                     name: yup.string().required('This field is required')
                 })}
                 onSubmit = {
-                    values => {
-                        getCharacterByName(values.name)
-                            .then(res => {setChar(res); setFirstLoad(true)})
-                    }
+                    ({name}) => {updateChar(name)}
                     }>
                 <Form className="findChar__form">
                     <label htmlFor="name">Or find a character by name:</label>
@@ -51,17 +60,25 @@ const FindChar = () => {
                         <button type="submit" className="findChar__submit btn btn-main">FIND</button>
                     </div>
                     <FormikErrorMessage name="name" component="div" className="findChar__msg-noname" />
-                    {char && !loading ? 
-                    <div className="findChar__msg-wrapper">
-                        <span className="findChar__msg findChar__msg_green">
-                            There is! Visit {char.name} page?
-                        </span> 
-                        <Link to={`/characters/${char.id}`} className="findChar__link btn btn-sec">TO PAGE</Link>
-                    </div>
-                    : null}
-                    {!char && firstLoad && !loading ? <div className="findChar__msg-wrapper"><span className="findChar__msg">The character was not found. Check the name and try again</span></div>: null}
+                    {
+                        setContent(process, () => { return(
+                            char ? 
+                            <div className="findChar__msg-wrapper">
+                                <span className="findChar__msg findChar__msg_green">
+                                    There is! Visit {char.name} page?
+                                </span> 
+                                <Link to={`/characters/${char.id}`} className="findChar__link btn btn-sec">TO PAGE</Link>
+                            </div>
+                            : null)
+                        })
+                    }
+                    {!char && submitClicked ? <div className="findChar__msg-wrapper"><span className="findChar__msg">The character was not found. Check the name and try again</span></div>: null}
                 </Form>
             </Formik>
-        )
+            
+            
+        </div>
+    )
 }
+
 export default FindChar;
